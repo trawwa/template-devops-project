@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: app-container
-        image: my-app:latest
+        image: template-devops-project:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
         resources:
