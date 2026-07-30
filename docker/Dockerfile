@@ -1,13 +1,10 @@
-# Build stage
-FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+FROM python:3.11-slim
 
-# Runtime stage
-FROM node:18-alpine
 WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
-EXPOSE 3000
-CMD ["node", "index.js"]
+
+CMD ["python", "app.py"]

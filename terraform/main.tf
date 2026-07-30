@@ -12,4 +12,9 @@ provider "aws" {
     region = var.aws_region
 }
 
-# Add your resources here
+
+output "aws_region" {
+    description = "AWS region where resources are deployed"
+    value       = var.aws_region
+}
+
