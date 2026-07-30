@@ -1,6 +1,7 @@
 """Simple web application template."""
 
 import logging
+import os
 import sys
 import time
 
@@ -34,6 +35,8 @@ def index():
 @app.get("/health")
 def health():
     """Return a simple health response for liveness/readiness probes."""
+    if os.environ.get("FAIL_HEALTH") == "true":
+        return jsonify(status="broken"), 500
     return jsonify(status="ok"), 200
 
 

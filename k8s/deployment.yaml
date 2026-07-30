@@ -18,7 +18,7 @@ spec:
       containers:
       - name: app-container
         image: template-devops-project:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never
         ports:
         - containerPort: 8080
         resources:
@@ -31,3 +31,15 @@ spec:
         env:
         - name: ENVIRONMENT
           value: "production"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 5
