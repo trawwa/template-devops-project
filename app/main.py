@@ -1,8 +1,28 @@
 """Simple web application template."""
 
-from flask import Flask, jsonify
+import logging
+import sys
+import time
+
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
+
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+)
+
+
+@app.before_request
+def log_request():
+    app.logger.info(
+        "request=%s path=%s remote=%s",
+        request.method,
+        request.path,
+        request.remote_addr,
+    )
 
 
 @app.get("/")
@@ -15,6 +35,25 @@ def index():
 def health():
     """Return a simple health response for liveness/readiness probes."""
     return jsonify(status="ok"), 200
+
+
+@app.get("/load")
+def load():
+    """Generate CPU load while the request is active."""
+    duration_seconds = 3
+    start = time.time()
+    result = 0
+    while time.time() - start < duration_seconds:
+        result += 1  # CPU-bound work
+    elapsed = time.time() - start
+    return (
+        jsonify(
+            status="ok",
+            load_duration=round(elapsed, 3),
+            iterations=result,
+        ),
+        200,
+    )
 
 
 if __name__ == "__main__":

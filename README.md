@@ -63,6 +63,30 @@ docker build -t template-devops-project -f docker/Dockerfile .
 ### Запуск контейнера
 
 ```bash
-docker run --rm template-devops-project
+docker run --rm -p 8080:8080 template-devops-project
+```
+
+### Доступные HTTP endpoint
+
+- `GET /` — базовый ответ сервиса
+- `GET /health` — проверка живости/готовности
+- `GET /load` — создает CPU-нагрузку на несколько секунд
+
+### Примеры проверки
+
+```bash
+curl -i http://localhost:8080/
+curl -i http://localhost:8080/health
+curl -i http://localhost:8080/load
+```
+
+### Логирование
+
+Приложение логирует каждый входящий запрос в `stdout`.
+
+Если приложение запущено в контейнере, логи можно смотреть через:
+
+```bash
+docker logs <container-id>
 ```
 
