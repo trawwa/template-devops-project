@@ -1,14 +1,14 @@
 # Build
-FROM python:3.11-slim AS builder
+FROM python:3.11-alpine AS builder
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Runtime
-FROM python:3.11-slim
+FROM python:3.11-alpine
 WORKDIR /app
 
-RUN useradd -m appuser
+RUN adduser -D appuser
 
 COPY --from=builder --chown=appuser:appuser /root/.local /home/appuser/.local
 COPY --chown=appuser:appuser app/ .
