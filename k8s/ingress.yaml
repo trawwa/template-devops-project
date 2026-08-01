@@ -3,16 +3,10 @@ kind: Ingress
 metadata:
   name: ingress-template
   namespace: default
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - example.com
-      secretName: example-tls
   rules:
-    - host: example.com
+    - host: app.local
       http:
         paths:
           - path: /
